@@ -10,7 +10,7 @@ TODO:
 -  arxiv paper release
 
 
-HDTR-Net-v2.0 Will Come Soon!
+LetItTalk-Net Will Come Soon!
 
 UPDATE:
 - 2025-01-08: Train VQVAE , GAN Inversion pipeline!
