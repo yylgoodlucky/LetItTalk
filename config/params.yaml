@@ -1,0 +1,63 @@
+
+data_path: /data/test-db/home/liyongyuan/Data_Disk1/Datasets/LRW/enhance_preprocessed
+gpus: [2, 3, 4, 5, 6, 7]
+logger:
+  dir: ./exp
+  name: motsync_gpus6_batch16
+
+
+network:
+  vq_vae:
+    pretrained: ./exp/vq_vae_gpus6_batch16/ckpt/vq_vae_latest.pth
+    in_channels: 3
+    embedding_dim: 512
+    num_embeddings: 512
+    num_layers: 6
+  motsync:
+    pretrained: ./exp/motsync_gpus6_batch16/ckpt/motsync_latest.pth
+    input_nc: 3
+    n_styles: 2
+    n_mlp: 4
+    embeding_dim: 1024
+    encoder_type: BackboneEncoderUsingLastLayerIntoWPlus
+
+
+dataset:
+  img_size: 512
+  augmentation: false
+  batch_size: 16
+  num_workers: 16
+  drop_last: false
+  shuffle: false
+  pin_memory: false
+
+
+optimizer:
+  lr: 5e-5
+  betas: [0.9, 0.999]
+  weight_decay: 0.0001
+  eps: 1e-8
+
+  step_size: 30
+  gamma: 0.5
+
+
+train:
+  num_epochs: 1000
+  save_ckpt_interval: 100
+  print_loss_interval: 20
+  log_loss_interval: 20
+  vis_interval: 1000
+
+
+loss:
+  loss_type: [Cosine_loss]
+  l1_loss:
+    weight: 1.0
+  perceptual_loss:
+    weight: 1.0
+    perceptual_loss_type: vgg
+    perceptual_loss_layer: 16
+    perceptual_loss_feature_dim: 512
+  Cosine_loss:
+    weight: 1.0
