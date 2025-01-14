@@ -1,0 +1,69 @@
+
+data_path: /data/test-db/home/liyongyuan/Data_Disk1/Datasets/LRW/enhance_preprocessed
+data_file: /data/test-db/home/liyongyuan/Data_Disk1/Datasets/filelists/stylesync_datalists.txt
+gpus: [1]
+logger:
+  dir: ./exp
+  name: stylesync_gpus1_batch4
+
+network:
+  stylesync:
+    pretrained: ./exp/stylesync_gpus1_batch4/ckpt/stylesync_latest.pth
+    generator:
+      size: 512
+      style_dim: 512
+      motion_dim: 20
+      channel_multiplier: 1
+    discriminator:
+      size: 512
+      in_channel: 4
+
+dataset:
+  img_size: 512
+  augmentation: false
+  batch_size: 4
+  num_workers: 4
+  drop_last: false
+  shuffle: true
+  pin_memory: false
+
+
+optim:
+  optimizer_g:
+    lr: 1e-4
+    betas: [0.9, 0.999]
+    weight_decay: 0.0001
+    eps: 1e-8
+    step_size: 30
+    gamma: 0.5
+  
+  optimizer_d:
+    lr: 1e-5
+    betas: [0.9, 0.999]
+    weight_decay: 0.0001
+    eps: 1e-8
+    step_size: 30
+    gamma: 0.5
+
+
+train:
+  num_epochs: 1000
+  save_ckpt_interval: 1000
+  print_loss_interval: 50
+  log_loss_interval: 10
+  vis_interval: 100
+  adv_loss: 2000
+
+
+loss:
+  l1_loss:
+    weight: 1.0
+  perceptual_loss:
+    weight: 1.0
+  Cosine_loss:
+    weight: 1.0
+  GV_Loss:
+    weight: 1.0
+    patch_size: 8
+  # Identity_Loss:
+  #   weight: 1.0
